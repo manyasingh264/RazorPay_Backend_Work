@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { db } from '../../db/index.js';
-import { employees, rms, apes, cfos } from '../../db/schema.js';
+import { db } from '../../backend/db/index.js';
+import { employees, rms, apes, cfos } from '../../backend/db/schema.js';
 import { eq } from 'drizzle-orm';
 
 /**

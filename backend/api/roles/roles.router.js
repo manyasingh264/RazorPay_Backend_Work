@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { authMiddleware } from '../../middleware/auth.middleware.js';
+import { authMiddleware } from '../../../middleware/auth.middleware.js';
 import { validateRoles } from './dto/roles.dto.js';
 import { assignRoleController } from './roles.controller.js';
 

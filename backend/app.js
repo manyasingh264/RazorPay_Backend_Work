@@ -3,10 +3,10 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
-import onboardingRouter from './api/onboarding/onboarding.router.js';
-import employeesRouter from './api/employees/employees.router.js';
-import reimbursementRouter from './api/reimbursement/reimbursement.router.js';
-import rolesRouter from './api/roles/roles.router.js';
+import onboardingRouter from './backend/api/onboarding/onboarding.router.js';
+import employeesRouter from './backend/api/employees/employees.router.js';
+import reimbursementRouter from './backend/api/reimbursement/reimbursement.router.js';
+import rolesRouter from './backend/api/roles/roles.router.js';
 
 dotenv.config();
 
