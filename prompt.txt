@@ -1,0 +1,220 @@
+- Build a role-based access control for a reimbursement tool
+- The tech stack used should be only JavaScript(No Typescript), Express.js and PostgreSQL for database. DO NOT USE ANY OTHER FRAMEWORKS OTHER THAN ONES MENTIONED.
+- Use supabase to host the db and drizzle-kit as the ORM.
+- All endpoints are under /rest prefix. 
+- Authentication is cookie-based. 
+
+The repository structure should be as follows:
+	/app.js: 
+        - Should be the entry point of the backend
+        - Should have endpoints:
+            - /rest/roles/ pointing to the roles.router.js
+            - /rest/onboardings/ pointing to a onboarding.router.js
+            - /rest/employees/ pointing to a employees.router.js
+            - /rest/reimbursements/ pointing to a reimbursement.router.js
+
+    /api
+        /onboarding
+            /dto
+                /login.dto.js
+                    - should contain email, password
+                /register.dto.js
+                    - should contain
+                        - name
+                        - email: should only accept email with org.com domain
+                        - password
+            
+            /onboarding.router.js
+                - POST /register route will pass through register.dto.js then to registerController
+                - POST /login route will pass through login.dto.js then to loginController
+                - POST /logout route will pass through logout.dto.js then to logoutController
+
+            /onboarding.controller.js 
+                - register
+                    - only allow emails that have 'org.com' domain
+                - login 
+                    - Login response should set the auth cookie and protected endpoints access them automatically.
+                - logout
+                    - clear the cookies of the user
+        
+        /employees
+            /dto
+                /assign.dto.js 
+                    - request body should look like
+                        userID(EMP), userID(RM)
+
+            /employees.router.js
+                - GET / router will validate user then route to listEmployeeController
+                    - Should not allow users with role: EMP
+                - POST /assign will validate user if CFO, validate schema from assign.dto.js only then route to assignController
+                - DELETE /assign will validate user if CFO, validate schema from assign.dto.js then route to deleteController
+
+            /employees.controller.js
+                - listEmployeeController
+                    - If role: RM, will fetch only the EMP with foreign key as curr user.
+                    - If role: APE, will fetch all the EMP and RM records.
+                    - If role: CFO fetch all the records.
+                    - Success response should look like: 
+                        {
+                            "status": "success",
+                            "data": {
+                                "users": [
+                                {
+                                    "userId": ...,
+                                    "name": ...,
+                                    "email": ...,         
+                                    "role": ...
+                                },       
+                                ...
+                                ]
+                            }
+                        }
+                
+                - deleteController
+                    - should remove the assignment between an EMP and RM
+
+        /reimbursement
+            /dto
+                /postReimbursement.dto.js
+                    - request body schema should be:
+                        {
+                            title: string,
+                            description: string,
+                            amount: number
+                        }
+
+                /patchReimbursement.dto.js
+                    - request body should be:
+                        {
+                            userID: string,
+                            status: string
+                        }
+
+            /reimbursement.router.js
+                - GET / will validate user and route to getReimbursement
+                - GET /<user-id> validate user and route to getUserReimbursement
+                    - route only if the requesting userId is equal to the params userId
+                    - Or if requesting userId is foreign key to the params userID
+                    - Or if requesting user role is APE or CFO.
+                - POST / will validate user, if EMP ONLY THEN, validate schema from postReimbursement.dto.js and route to postReimbursement
+                - PATCH / will validate user validate schema from patchReimbursement.dto.js and route to approveReimbursement
+                    - PATCH / route should reject the user if role: EMP
+
+            /reimbursement.controller.js
+                - getReimbursement:
+                    - EMP - lists their own reimbursements.
+                    - RM - sees the reimbursements that are PENDING from their EMPs.
+                    - APE - sees reimbursements PENDING at the APE level but already APPROVED by the RM.
+                    - CFO - sees reimbursements already APPROVED by the APEs.
+                    - The success response should look like:
+                        {
+                            "status": "success",
+                            "data": {
+                                "reimbursements": [
+                                {
+                                    "title": "abcd",
+                                    "description": "xyz",
+                                    "amount": 999,
+                                    "status": "..."
+                                },       
+                                ...
+                                ]
+                            }
+                        }
+
+                - getUserReimbursement:
+                    - Should fetch the list of all reimbursements of the params userID
+                    - Success response should look like:
+                    {
+                        "status": "success",
+                        "data": {
+                            "reimbursements": [
+                            {
+                                "title": "abcd",
+                                "description": "xyz",
+                                "amount": 999,
+                                "status": "..."
+                            },       
+                            ...
+                            ]
+                        }
+                    }
+
+                - postReimbursement:
+                    Should create an entry in the Reimbursement table with 
+                    - current EMP id as foreign key
+                    - title
+                    - description
+                    - amount
+                    - status: pending (by default)
+                
+                - approveReimbursement:
+                    - If Role: RM can approve or reject the reimbursement of only EMP with Foreign Key currId.
+                        - set approvedByRM: true in the Reimbursement database
+                    - If Role: APE can approve or reject the reimbursement.
+                        - set approvedByAPE: true in the Reimbursement database
+                    - If Role: CFO can approve or reject the reimbursement.
+                        - set approvedByCFO: true in the Reimbursement database.
+
+                    - EMP isPending status will turn APPROVED if their RM and one of the APE have approved request.
+
+
+        /roles
+            /dto
+                /roles.dto.js
+                    - request body structure should contain (user, role)
+            
+            /roles.router.js
+                - POST /assign route will be validated by auth.middleware.js
+                    - If the role is CFO ONLY then will it check roles.dto.js
+                    - After validation go to roles.controller.js
+                    - Else will give 403 Forbidden
+
+            /roles.controller.js
+                - Can assign a fixed set of roles to a user.
+                    - Roles: EMP, RM, APE
+                
+    /middleware
+        /auth.middleware.js
+            - The cookie will contain the userID along with it's role
+    
+	/package.json: Should expose these script:
+			- dev: starts backend. Runs STRICTLY on port 7002				
+            - db:migrate: sets up the required db structure on the tester's system
+            - db:seed-data: sets up the CFO account. DO NOT SEED ANYTHING EXCEPT THE CFO ACCOUNT.
+
+
+The Database will have four tables:
+- Employee
+    - EmpID: string {Primary Key},
+    - name: string,
+    - email: string,
+    - password: string,
+    - RMID: NULL by default {Foreign Key},
+
+- RM (Reporting Manager)
+    - RMID: string {Primary Key},
+    - name: string,
+    - email: string,
+    - password: string,
+
+- APE (Accounts Payable Executive)
+    - name: string,
+    - email: string,
+    - password: string,
+
+- reimbursement
+    - id: string {primary key},
+    - EmpID: string {Foreign Key},
+    - title: string,
+    - description: string,
+    - amount: number,
+    - approvedByRM: boolean,
+    - approvedByAPE: boolean,
+    - approvedByCFO: boolean,
+    - status: ENUM("PENDING", "REJECTED", "APPROVED"), PENDING by default
+
+
+CFO's Credentials should be SEEDED EXACTLY AS:
+    - email: cfo@org.com
+    - password: CFO#ORG@April2026
