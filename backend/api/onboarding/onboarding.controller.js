@@ -109,11 +109,13 @@ export const loginController = async (req, res) => {
     });
 
     // Set httpOnly cookie — protected endpoints read this automatically
+    // sameSite:'none' + secure:true is REQUIRED for cross-origin (different subdomains)
+    const isProd = process.env.NODE_ENV === 'production';
     res.cookie('auth_token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      secure:   isProd,                         // must be true when sameSite:'none'
+      sameSite: isProd ? 'none' : 'lax',        // 'none' for cross-origin prod, 'lax' for local dev
+      maxAge:   7 * 24 * 60 * 60 * 1000,        // 7 days
     });
 
     return res.status(200).json({
@@ -131,6 +133,11 @@ export const loginController = async (req, res) => {
  * Clears the auth_token cookie.
  */
 export const logoutController = (req, res) => {
-  res.clearCookie('auth_token');
+  const isProd = process.env.NODE_ENV === 'production';
+  res.clearCookie('auth_token', {
+    httpOnly: true,
+    secure:   isProd,
+    sameSite: isProd ? 'none' : 'lax',
+  });
   return res.status(200).json({ status: 'success', message: 'Logged out successfully' });
 };

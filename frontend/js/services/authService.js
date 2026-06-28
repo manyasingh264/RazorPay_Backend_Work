@@ -32,9 +32,22 @@ class _AuthService {
   async login(credentials) {
     const response = await login(credentials);
 
-    // Backend response: { status: 'success', data: { user: { ... } } }
-    const user = response?.data?.user || response?.user;
-    if (!user) throw new Error('Unexpected server response after login.');
+    // Backend returns: { status: 'success', data: { userId, role } }
+    // Normalize into the user shape the rest of the app uses.
+    const data = response?.data;
+    if (!data?.userId && !data?.user) {
+      throw new Error('Unexpected server response after login.');
+    }
+
+    // Support both shapes: { data: { user: {...} } } and { data: { userId, role } }
+    const user = data.user || {
+      userId: data.userId,
+      role:   data.role,
+      name:   data.name   || '',
+      email:  data.email  || credentials.email,
+    };
+
+    if (!user.role) throw new Error('Unexpected server response after login.');
 
     this._user = user;
     Router._saveSession(user);
