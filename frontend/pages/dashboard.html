@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="ReimburseApp Dashboard — manage reimbursements and team." />
+  <title>Dashboard — ReimburseApp</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/dashboard.css" />
+  <link rel="stylesheet" href="../css/tables.css" />
+  <link rel="stylesheet" href="../css/forms.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+</head>
+<body>
+
+  <!-- App Shell -->
+  <div class="app-shell">
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar" aria-label="Main navigation"></aside>
+
+    <!-- Mobile overlay -->
+    <div id="sidebar-overlay" class="sidebar-overlay" aria-hidden="true"></div>
+
+    <!-- Main area -->
+    <div style="flex:1; display:flex; flex-direction:column; min-width:0;">
+
+      <!-- Top Navbar -->
+      <header id="navbar" class="navbar" role="banner"></header>
+
+      <!-- Page Content -->
+      <main class="main-content" id="dashboard-content" aria-label="Dashboard content">
+        <!-- Injected by dashboard.js -->
+      </main>
+
+    </div>
+  </div>
+
+  <!-- Page JS -->
+  <script type="module" src="../js/pages/dashboard.js"></script>
+</body>
+</html>

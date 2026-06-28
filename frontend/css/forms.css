@@ -1,0 +1,279 @@
+/* ==========================================================
+   forms.css
+   Form inputs, labels, validation, select, textarea,
+   form groups, error/success states, and helper text
+   ========================================================== */
+
+/* ----------------------------------------------------------
+   1. Form Group (label + input + error)
+   ---------------------------------------------------------- */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+/* ----------------------------------------------------------
+   2. Labels
+   ---------------------------------------------------------- */
+.form-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-700);
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.form-label .required {
+  color: var(--color-danger);
+  font-size: var(--font-size-sm);
+}
+
+/* ----------------------------------------------------------
+   3. Input / Textarea / Select (shared base)
+   ---------------------------------------------------------- */
+.form-input,
+.form-textarea,
+.form-select {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-gray-300);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-sm);
+  font-family: var(--font-family);
+  color: var(--color-gray-800);
+  background-color: var(--color-white);
+  transition: border-color var(--transition-fast),
+              box-shadow var(--transition-fast),
+              background-color var(--transition-fast);
+  outline: none;
+  line-height: var(--line-height-normal);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: var(--color-gray-400);
+}
+
+/* Focus state */
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Disabled state */
+.form-input:disabled,
+.form-textarea:disabled,
+.form-select:disabled {
+  background-color: var(--color-gray-50);
+  color: var(--color-gray-400);
+  cursor: not-allowed;
+}
+
+/* Error state */
+.form-input.error,
+.form-textarea.error,
+.form-select.error {
+  border-color: var(--color-danger);
+}
+
+.form-input.error:focus,
+.form-textarea.error:focus,
+.form-select.error:focus {
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+/* Success state */
+.form-input.success,
+.form-textarea.success,
+.form-select.success {
+  border-color: var(--color-success);
+}
+
+/* ----------------------------------------------------------
+   4. Textarea specific
+   ---------------------------------------------------------- */
+.form-textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* ----------------------------------------------------------
+   5. Select specific
+   ---------------------------------------------------------- */
+.form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%236b7280'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--space-3) center;
+  background-size: 16px;
+  padding-right: calc(var(--space-3) + 1.25rem + var(--space-2));
+  cursor: pointer;
+}
+
+/* ----------------------------------------------------------
+   6. Input with icon
+   ---------------------------------------------------------- */
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon-left {
+  position: absolute;
+  left: var(--space-3);
+  color: var(--color-gray-400);
+  pointer-events: none;
+  font-size: var(--font-size-sm);
+}
+
+.input-icon-right {
+  position: absolute;
+  right: var(--space-3);
+  color: var(--color-gray-400);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+}
+
+.input-icon-right:hover {
+  color: var(--color-gray-600);
+}
+
+.input-wrapper .form-input.has-icon-left {
+  padding-left: calc(var(--space-3) + 1rem + var(--space-2));
+}
+
+.input-wrapper .form-input.has-icon-right {
+  padding-right: calc(var(--space-3) + 1rem + var(--space-2));
+}
+
+/* ----------------------------------------------------------
+   7. Helper / Error / Success text
+   ---------------------------------------------------------- */
+.form-helper {
+  font-size: var(--font-size-xs);
+  color: var(--color-gray-400);
+}
+
+.form-error {
+  font-size: var(--font-size-xs);
+  color: var(--color-danger);
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.form-success-text {
+  font-size: var(--font-size-xs);
+  color: var(--color-success);
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+/* ----------------------------------------------------------
+   8. Checkbox / Radio
+   ---------------------------------------------------------- */
+.form-check {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+}
+
+.form-check input[type="checkbox"],
+.form-check input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.form-check-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-700);
+  cursor: pointer;
+}
+
+/* ----------------------------------------------------------
+   9. Amount Input (number with currency prefix)
+   ---------------------------------------------------------- */
+.amount-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.amount-prefix {
+  position: absolute;
+  left: var(--space-3);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-500);
+  pointer-events: none;
+}
+
+.amount-input-wrapper .form-input {
+  padding-left: calc(var(--space-3) + 1rem);
+}
+
+/* ----------------------------------------------------------
+   10. Form Row (horizontal layout)
+   ---------------------------------------------------------- */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+.form-row.three-col {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+/* ----------------------------------------------------------
+   11. Form Divider
+   ---------------------------------------------------------- */
+.form-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin: var(--space-6) 0;
+}
+
+.form-divider::before,
+.form-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background-color: var(--color-gray-200);
+}
+
+.form-divider-text {
+  font-size: var(--font-size-xs);
+  color: var(--color-gray-400);
+  white-space: nowrap;
+}
+
+/* ----------------------------------------------------------
+   12. Inline Form (used in modals)
+   ---------------------------------------------------------- */
+.inline-form {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-end;
+}
+
+.inline-form .form-group {
+  flex: 1;
+  margin-bottom: 0;
+}

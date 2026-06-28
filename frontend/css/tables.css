@@ -1,0 +1,382 @@
+/* ==========================================================
+   tables.css
+   Data tables, search bars, pagination, filter bars
+   ========================================================== */
+
+/* ----------------------------------------------------------
+   1. Table Toolbar (search + actions)
+   ---------------------------------------------------------- */
+.table-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--color-gray-100);
+  flex-wrap: wrap;
+}
+
+.table-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex: 1;
+  min-width: 200px;
+}
+
+.table-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+/* Search input */
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-box-icon {
+  position: absolute;
+  left: var(--space-3);
+  color: var(--color-gray-400);
+  font-size: var(--font-size-sm);
+  pointer-events: none;
+}
+
+.search-input {
+  padding: var(--space-2) var(--space-3) var(--space-2) calc(var(--space-3) + 1.25rem + var(--space-2));
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-800);
+  background-color: var(--color-white);
+  width: 260px;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  outline: none;
+}
+
+.search-input::placeholder {
+  color: var(--color-gray-400);
+}
+
+.search-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Filter select */
+.filter-select {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-700);
+  background-color: var(--color-white);
+  cursor: pointer;
+  outline: none;
+  transition: border-color var(--transition-fast);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%236b7280'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--space-2) center;
+  background-size: 16px;
+  padding-right: calc(var(--space-3) + 1.25rem);
+}
+
+.filter-select:focus {
+  border-color: var(--color-primary);
+}
+
+/* ----------------------------------------------------------
+   2. Table Component
+   ---------------------------------------------------------- */
+.table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+}
+
+/* Table head */
+.data-table thead {
+  background-color: var(--color-gray-50);
+}
+
+.data-table thead th {
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-gray-500);
+  border-bottom: 1px solid var(--color-gray-200);
+  white-space: nowrap;
+  user-select: none;
+}
+
+/* Sortable column header */
+.data-table thead th.sortable {
+  cursor: pointer;
+}
+
+.data-table thead th.sortable:hover {
+  color: var(--color-gray-700);
+  background-color: var(--color-gray-100);
+}
+
+.th-sort-icon {
+  margin-left: var(--space-1);
+  color: var(--color-gray-300);
+  font-size: 0.65rem;
+  vertical-align: middle;
+}
+
+.data-table thead th.sort-asc  .th-sort-icon,
+.data-table thead th.sort-desc .th-sort-icon {
+  color: var(--color-primary);
+}
+
+/* Table body */
+.data-table tbody tr {
+  border-bottom: 1px solid var(--color-gray-100);
+  transition: background-color var(--transition-fast);
+}
+
+.data-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.data-table tbody tr:hover {
+  background-color: var(--color-gray-50);
+}
+
+.data-table tbody td {
+  padding: var(--space-4);
+  color: var(--color-gray-700);
+  vertical-align: middle;
+}
+
+/* User cell (avatar + name) */
+.table-user-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.table-user-name {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-900);
+}
+
+.table-user-email {
+  font-size: var(--font-size-xs);
+  color: var(--color-gray-400);
+  margin-top: 1px;
+}
+
+/* Amount cell */
+.table-amount {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-900);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Actions cell */
+.table-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* ----------------------------------------------------------
+   3. Skeleton Loading Rows
+   ---------------------------------------------------------- */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-gray-100) 25%,
+    var(--color-gray-200) 50%,
+    var(--color-gray-100) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s infinite;
+  border-radius: var(--radius-md);
+}
+
+@keyframes skeleton-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.skeleton-row td {
+  padding: var(--space-4);
+}
+
+.skeleton-text {
+  height: 14px;
+  border-radius: var(--radius-sm);
+}
+
+.skeleton-text.w-20 { width: 20%; }
+.skeleton-text.w-30 { width: 30%; }
+.skeleton-text.w-40 { width: 40%; }
+.skeleton-text.w-60 { width: 60%; }
+.skeleton-text.w-80 { width: 80%; }
+
+.skeleton-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+}
+
+.skeleton-badge {
+  height: 20px;
+  width: 70px;
+  border-radius: var(--radius-full);
+}
+
+/* ----------------------------------------------------------
+   4. Pagination
+   ---------------------------------------------------------- */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-6);
+  border-top: 1px solid var(--color-gray-100);
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.pagination-info {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-500);
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.pagination-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-md);
+  background-color: var(--color-white);
+  color: var(--color-gray-600);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.pagination-btn:hover:not(:disabled) {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.pagination-btn.active {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+.pagination-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pagination-ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  color: var(--color-gray-400);
+  font-size: var(--font-size-sm);
+}
+
+/* ----------------------------------------------------------
+   5. Table No Results
+   ---------------------------------------------------------- */
+.table-empty {
+  padding: var(--space-12) var(--space-8);
+  text-align: center;
+}
+
+.table-empty-icon {
+  font-size: 2.5rem;
+  color: var(--color-gray-300);
+  margin-bottom: var(--space-3);
+}
+
+.table-empty-title {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-600);
+  margin-bottom: var(--space-1);
+}
+
+.table-empty-desc {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-400);
+}
+
+/* ----------------------------------------------------------
+   6. Inline Approval Buttons
+   ---------------------------------------------------------- */
+.approval-actions {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.btn-approve {
+  padding: var(--space-1) var(--space-3);
+  background-color: var(--color-success-light);
+  border: 1px solid var(--color-success-border);
+  color: var(--color-success);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.btn-approve:hover {
+  background-color: var(--color-success);
+  color: var(--color-white);
+  border-color: var(--color-success);
+}
+
+.btn-reject {
+  padding: var(--space-1) var(--space-3);
+  background-color: var(--color-danger-light);
+  border: 1px solid var(--color-danger-border);
+  color: var(--color-danger);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.btn-reject:hover {
+  background-color: var(--color-danger);
+  color: var(--color-white);
+  border-color: var(--color-danger);
+}

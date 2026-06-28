@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Create your ReimburseApp account. Only @org.com email addresses are accepted." />
+  <title>Create Account — ReimburseApp</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/forms.css" />
+  <link rel="stylesheet" href="../css/login.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+</head>
+<body>
+  <!-- Decorative background -->
+  <div class="auth-bg-pattern" aria-hidden="true"></div>
+
+  <main class="auth-page">
+    <div class="auth-card">
+
+      <!-- Logo -->
+      <div class="auth-logo">
+        <div class="auth-logo-icon" aria-hidden="true">💸</div>
+        <span class="auth-logo-name">ReimburseApp</span>
+      </div>
+
+      <!-- Heading -->
+      <h1 class="auth-title">Create an account</h1>
+      <p class="auth-subtitle">
+        Only <strong>@org.com</strong> email addresses are accepted.
+      </p>
+
+      <!-- Server error alert -->
+      <div class="auth-alert error hidden" id="register-alert" role="alert" aria-live="assertive">
+        <span class="auth-alert-icon" aria-hidden="true">⚠</span>
+        <span id="register-alert-msg"></span>
+      </div>
+
+      <!-- Success alert -->
+      <div class="auth-alert success hidden" id="register-success" role="status" aria-live="polite">
+        <span class="auth-alert-icon" aria-hidden="true">✓</span>
+        <span>Account created! Ask your CFO to assign you a role, then
+          <a href="login.html">sign in</a>.
+        </span>
+      </div>
+
+      <!-- Register Form -->
+      <form id="register-form" novalidate>
+
+        <!-- Full Name -->
+        <div class="form-group">
+          <label for="register-name" class="form-label">
+            Full name <span class="required" aria-hidden="true">*</span>
+          </label>
+          <div class="input-wrapper">
+            <span class="input-icon-left" aria-hidden="true">👤</span>
+            <input
+              type="text"
+              id="register-name"
+              name="name"
+              class="form-input has-icon-left"
+              placeholder="Manya Singh"
+              autocomplete="name"
+              required
+              aria-required="true"
+            />
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label for="register-email" class="form-label">
+            Work email <span class="required" aria-hidden="true">*</span>
+          </label>
+          <div class="input-wrapper">
+            <span class="input-icon-left" aria-hidden="true">✉</span>
+            <input
+              type="email"
+              id="register-email"
+              name="email"
+              class="form-input has-icon-left"
+              placeholder="you@org.com"
+              autocomplete="email"
+              required
+              aria-required="true"
+            />
+          </div>
+          <p class="form-helper">Must be an <code>@org.com</code> email address.</p>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <label for="register-password" class="form-label">
+            Password <span class="required" aria-hidden="true">*</span>
+          </label>
+          <div class="input-wrapper">
+            <span class="input-icon-left" aria-hidden="true">🔒</span>
+            <input
+              type="password"
+              id="register-password"
+              name="password"
+              class="form-input has-icon-left has-icon-right"
+              placeholder="Min 8 characters"
+              autocomplete="new-password"
+              required
+              aria-required="true"
+              aria-describedby="password-strength-label"
+            />
+            <button
+              type="button"
+              class="input-icon-right"
+              id="toggle-reg-password"
+              aria-label="Toggle password visibility"
+            >👁</button>
+          </div>
+          <!-- Password strength bar -->
+          <div class="password-strength" id="password-strength-wrapper" aria-hidden="true">
+            <div class="password-strength-bar">
+              <div class="password-strength-fill" id="password-strength-fill"></div>
+            </div>
+            <p class="password-strength-label" id="password-strength-label"></p>
+          </div>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="form-group">
+          <label for="register-confirm" class="form-label">
+            Confirm password <span class="required" aria-hidden="true">*</span>
+          </label>
+          <div class="input-wrapper">
+            <span class="input-icon-left" aria-hidden="true">🔒</span>
+            <input
+              type="password"
+              id="register-confirm"
+              name="confirmPassword"
+              class="form-input has-icon-left"
+              placeholder="Repeat your password"
+              autocomplete="new-password"
+              required
+              aria-required="true"
+            />
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <button
+          type="submit"
+          class="btn btn-primary btn-full btn-lg"
+          id="register-submit-btn"
+          aria-label="Create account"
+        >
+          Create account
+        </button>
+
+      </form>
+
+      <!-- Footer -->
+      <p class="auth-footer">
+        Already have an account?
+        <a href="login.html" id="go-to-login">Sign in</a>
+      </p>
+
+    </div>
+  </main>
+
+  <!-- Page JS -->
+  <script type="module" src="../js/pages/register.js"></script>
+</body>
+</html>

@@ -3,10 +3,10 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
-import onboardingRouter from './backend/api/onboarding/onboarding.router.js';
-import employeesRouter from './backend/api/employees/employees.router.js';
-import reimbursementRouter from './backend/api/reimbursement/reimbursement.router.js';
-import rolesRouter from './backend/api/roles/roles.router.js';
+import onboardingRouter from './api/onboarding/onboarding.router.js';
+import employeesRouter from './api/employees/employees.router.js';
+import reimbursementRouter from './api/reimbursement/reimbursement.router.js';
+import rolesRouter from './api/roles/roles.router.js';
 
 dotenv.config();
 
@@ -14,7 +14,24 @@ const app = express();
 const PORT = process.env.PORT || 7002;
 
 // Middleware
-app.use(cors({ origin: true, credentials: true }));
+// Allowed CORS origins — cookies require explicit origin, NOT '*'
+const ALLOWED_ORIGINS = [
+  process.env.FRONTEND_URL,            // production frontend (set on Render)
+  'http://localhost:3000',             // npx serve local dev
+  'http://localhost:5500',             // VS Code Live Server
+  'http://127.0.0.1:5500',
+  'http://127.0.0.1:3000',
+].filter(Boolean); // remove undefined if FRONTEND_URL not set
+
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin (Postman, curl, server-to-server)
+    if (!origin) return callback(null, true);
+    if (ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
+    callback(new Error(`CORS: origin ${origin} not allowed`));
+  },
+  credentials: true,   // REQUIRED for cookie-based auth
+}));
 app.use(express.json());
 app.use(cookieParser());
 

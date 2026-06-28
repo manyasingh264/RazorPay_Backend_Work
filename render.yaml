@@ -1,0 +1,60 @@
+# render.yaml — Render Blueprint
+# Deploys both the backend API and the frontend static site
+# from the same GitHub repository.
+#
+# How to use:
+#  1. Push this file to your GitHub repo root
+#  2. Go to https://dashboard.render.com → New → Blueprint
+#  3. Connect your repo → Render reads this file automatically
+#  4. Set the secret env vars manually in the Render dashboard
+#     (DATABASE_URL, JWT_SECRET)
+
+services:
+  # ─────────────────────────────────────────────
+  # 1. Backend — Node.js / Express API
+  # ─────────────────────────────────────────────
+  - type: web
+    name: reimburse-backend
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node --experimental-vm-modules app.js
+    plan: free
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false        # Set manually in Render dashboard
+      - key: JWT_SECRET
+        sync: false        # Set manually in Render dashboard
+      - key: FRONTEND_URL
+        fromService:
+          name: reimburse-frontend
+          type: web
+          property: host   # Render injects the frontend URL here
+        # Fallback — can also be set manually as:
+        # value: https://reimburse-frontend.onrender.com
+
+  # ─────────────────────────────────────────────
+  # 2. Frontend — Static Site (pure HTML/CSS/JS)
+  # ─────────────────────────────────────────────
+  - type: web
+    name: reimburse-frontend
+    runtime: static
+    rootDir: frontend
+    staticPublishPath: .   # serve entire frontend/ folder
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: no-cache
+      - path: /css/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /js/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+    routes:
+      # Redirect root to login
+      - type: redirect
+        source: /
+        destination: /pages/login.html

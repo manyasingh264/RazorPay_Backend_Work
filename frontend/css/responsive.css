@@ -1,0 +1,306 @@
+/* ==========================================================
+   responsive.css
+   Mobile-first breakpoints, collapsible sidebar,
+   responsive tables, stacking cards, touch targets
+   ========================================================== */
+
+/* ----------------------------------------------------------
+   Breakpoints used:
+   sm:  640px
+   md:  768px
+   lg:  1024px
+   xl:  1280px
+   ---------------------------------------------------------- */
+
+/* ----------------------------------------------------------
+   1. Large Desktop (1280px+)
+   ---------------------------------------------------------- */
+@media (min-width: 1280px) {
+  .main-content {
+    padding: var(--space-10) var(--space-12);
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ----------------------------------------------------------
+   2. Desktop / Laptop (1024px - 1279px)
+   ---------------------------------------------------------- */
+@media (max-width: 1279px) {
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ----------------------------------------------------------
+   3. Tablet (768px - 1023px)
+   ---------------------------------------------------------- */
+@media (max-width: 1023px) {
+
+  /* Collapse sidebar by default on tablet */
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  /* Navbar spans full width on tablet */
+  .navbar {
+    left: 0;
+  }
+
+  /* Content spans full width */
+  .main-content {
+    margin-left: 0;
+    padding: var(--space-6);
+  }
+
+  /* Show hamburger button */
+  .sidebar-toggle {
+    display: flex;
+  }
+
+  /* Overlay visible when sidebar open */
+  .sidebar-overlay {
+    display: none;
+  }
+
+  .sidebar-overlay.active {
+    display: block;
+  }
+
+  /* Table toolbar wraps */
+  .table-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .table-toolbar-left,
+  .table-toolbar-right {
+    width: 100%;
+  }
+
+  .search-input {
+    width: 100%;
+  }
+
+  /* Form rows collapse to single column */
+  .form-row,
+  .form-row.three-col {
+    grid-template-columns: 1fr;
+  }
+
+  /* Auth card adjusts */
+  .auth-card {
+    padding: var(--space-8);
+  }
+
+  /* Stats grid 2 columns */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ----------------------------------------------------------
+   4. Mobile (max 767px)
+   ---------------------------------------------------------- */
+@media (max-width: 767px) {
+
+  /* Reduce base font slightly */
+  html { font-size: 15px; }
+
+  /* Full-width auth card with less padding */
+  .auth-card {
+    padding: var(--space-6);
+    border-radius: var(--radius-xl);
+    border: none;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .auth-page {
+    align-items: flex-start;
+    padding: var(--space-4);
+  }
+
+  /* Main content padding */
+  .main-content {
+    padding: var(--space-4);
+  }
+
+  /* Stats grid single column */
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  /* Reduce card body padding */
+  .card-body {
+    padding: var(--space-4);
+  }
+
+  .card-header {
+    padding: var(--space-4);
+    flex-wrap: wrap;
+  }
+
+  /* Page header stacks */
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* Navbar title shorter */
+  .navbar-title {
+    font-size: var(--font-size-sm);
+  }
+
+  /* Table horizontal scroll hint */
+  .table-wrapper {
+    border-radius: 0;
+    margin: 0 calc(-1 * var(--space-4));
+    padding: 0 var(--space-4);
+    width: calc(100% + var(--space-8));
+  }
+
+  /* Pagination info hidden on small screens */
+  .pagination-info {
+    display: none;
+  }
+
+  .pagination {
+    justify-content: center;
+  }
+
+  /* Modal full screen */
+  .modal-container {
+    width: 100vw;
+    min-height: 50vh;
+    margin: 0;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .modal-overlay {
+    align-items: flex-end;
+  }
+
+  /* Inline form stacks vertically */
+  .inline-form {
+    flex-direction: column;
+  }
+
+  /* Table actions wrap */
+  .table-actions {
+    flex-wrap: wrap;
+  }
+
+  /* Section header stacks */
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* ----------------------------------------------------------
+   5. Small Mobile (max 479px)
+   ---------------------------------------------------------- */
+@media (max-width: 479px) {
+  .btn-full-mobile {
+    width: 100%;
+  }
+
+  .auth-extras {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+  }
+
+  .table-toolbar-right {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-select {
+    width: 100%;
+  }
+}
+
+/* ----------------------------------------------------------
+   6. Print Styles
+   ---------------------------------------------------------- */
+@media print {
+  .sidebar,
+  .navbar,
+  .table-toolbar,
+  .pagination,
+  .btn,
+  .approval-actions {
+    display: none !important;
+  }
+
+  .main-content {
+    margin: 0;
+    padding: 0;
+  }
+
+  .card {
+    box-shadow: none;
+    border: 1px solid #ccc;
+    break-inside: avoid;
+  }
+}
+
+/* ----------------------------------------------------------
+   7. Touch Device Improvements
+   ---------------------------------------------------------- */
+@media (hover: none) and (pointer: coarse) {
+  /* Larger tap targets for buttons */
+  .btn {
+    min-height: 44px;
+  }
+
+  .btn-sm {
+    min-height: 36px;
+  }
+
+  .pagination-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .sidebar-link {
+    padding: var(--space-3) var(--space-3);
+    min-height: 44px;
+  }
+
+  /* Remove hover states that look odd on touch */
+  .data-table tbody tr:hover {
+    background-color: transparent;
+  }
+}
+
+/* ----------------------------------------------------------
+   8. Reduced Motion
+   ---------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

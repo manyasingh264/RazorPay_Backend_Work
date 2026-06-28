@@ -1,0 +1,447 @@
+/* ==========================================================
+   dashboard.css
+   Full-page layout: sidebar + navbar + main content area
+   ========================================================== */
+
+/* ----------------------------------------------------------
+   1. App Shell Layout
+   ---------------------------------------------------------- */
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--color-gray-50);
+}
+
+/* ----------------------------------------------------------
+   2. Sidebar
+   ---------------------------------------------------------- */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-width);
+  height: 100vh;
+  background-color: var(--color-white);
+  border-right: 1px solid var(--color-gray-200);
+  display: flex;
+  flex-direction: column;
+  z-index: var(--z-sidebar);
+  transition: transform var(--transition-normal);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-6);
+  border-bottom: 1px solid var(--color-gray-100);
+  height: var(--navbar-height);
+  flex-shrink: 0;
+}
+
+.sidebar-logo-icon {
+  width: 32px;
+  height: 32px;
+  background-color: var(--color-primary);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-white);
+  font-size: var(--font-size-base);
+  flex-shrink: 0;
+}
+
+.sidebar-logo-text {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-gray-900);
+  white-space: nowrap;
+}
+
+.sidebar-logo-sub {
+  font-size: var(--font-size-xs);
+  color: var(--color-gray-400);
+  font-weight: var(--font-weight-normal);
+}
+
+/* Navigation sections */
+.sidebar-nav {
+  flex: 1;
+  padding: var(--space-4) var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.sidebar-section-label {
+  font-size: 0.65rem;
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-gray-400);
+  padding: var(--space-3) var(--space-3) var(--space-2);
+  margin-top: var(--space-4);
+}
+
+.sidebar-section-label:first-child {
+  margin-top: 0;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-600);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--transition-fast),
+              color var(--transition-fast);
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  user-select: none;
+}
+
+.sidebar-link:hover {
+  background-color: var(--color-gray-100);
+  color: var(--color-gray-900);
+  text-decoration: none;
+}
+
+.sidebar-link.active {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.sidebar-link.active .sidebar-link-icon {
+  color: var(--color-primary);
+}
+
+.sidebar-link-icon {
+  width: 18px;
+  font-size: 1rem;
+  text-align: center;
+  color: var(--color-gray-400);
+  transition: color var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.sidebar-link-text {
+  flex: 1;
+  white-space: nowrap;
+}
+
+.sidebar-link-badge {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  font-size: 10px;
+  font-weight: var(--font-weight-semibold);
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+  min-width: 18px;
+  text-align: center;
+}
+
+/* Sidebar footer: user profile */
+.sidebar-footer {
+  padding: var(--space-4) var(--space-3);
+  border-top: 1px solid var(--color-gray-100);
+  flex-shrink: 0;
+}
+
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.sidebar-user:hover {
+  background-color: var(--color-gray-100);
+}
+
+.sidebar-user-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.sidebar-user-name {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-800);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-user-role {
+  font-size: var(--font-size-xs);
+  color: var(--color-gray-400);
+}
+
+/* ----------------------------------------------------------
+   3. Top Navbar
+   ---------------------------------------------------------- */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: var(--sidebar-width);
+  right: 0;
+  height: var(--navbar-height);
+  background-color: var(--color-white);
+  border-bottom: 1px solid var(--color-gray-200);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-6);
+  gap: var(--space-4);
+  z-index: var(--z-navbar);
+  transition: left var(--transition-normal);
+}
+
+.navbar-title {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-900);
+  flex: 1;
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* Mobile hamburger */
+.sidebar-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  color: var(--color-gray-600);
+  font-size: 1.25rem;
+  transition: background-color var(--transition-fast);
+}
+
+.sidebar-toggle:hover {
+  background-color: var(--color-gray-100);
+}
+
+/* ----------------------------------------------------------
+   4. Main Content Area
+   ---------------------------------------------------------- */
+.main-content {
+  margin-left: var(--sidebar-width);
+  margin-top: var(--navbar-height);
+  flex: 1;
+  min-height: calc(100vh - var(--navbar-height));
+  padding: var(--space-8);
+  max-width: 100%;
+  transition: margin-left var(--transition-normal);
+}
+
+/* ----------------------------------------------------------
+   5. Stats Grid
+   ---------------------------------------------------------- */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-6);
+  margin-bottom: var(--space-8);
+}
+
+/* ----------------------------------------------------------
+   6. Content Grid (2 cols)
+   ---------------------------------------------------------- */
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+  margin-bottom: var(--space-6);
+}
+
+.content-grid-full {
+  grid-column: 1 / -1;
+}
+
+/* ----------------------------------------------------------
+   7. Sidebar overlay for mobile
+   ---------------------------------------------------------- */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: calc(var(--z-sidebar) - 1);
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+}
+
+.sidebar-overlay.active {
+  display: block;
+  opacity: 1;
+}
+
+/* ----------------------------------------------------------
+   8. Section separator in dashboard
+   ---------------------------------------------------------- */
+.section {
+  margin-bottom: var(--space-8);
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+  gap: var(--space-4);
+}
+
+.section-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-900);
+}
+
+.section-desc {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-500);
+  margin-top: var(--space-1);
+}
+
+/* ----------------------------------------------------------
+   9. Sidebar — user footer + nav badge
+   ---------------------------------------------------------- */
+.sidebar-footer {
+  margin-top: auto;
+  padding: var(--space-4) var(--space-3);
+  border-top: 1px solid var(--color-gray-100);
+  flex-shrink: 0;
+}
+
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-2);
+  overflow: hidden;
+  cursor: default;
+}
+
+.sidebar-user-info {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.sidebar-user-name {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-800);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-user-role {
+  font-size: var(--font-size-xs);
+  color: var(--color-gray-400);
+  margin-top: 1px;
+}
+
+/* Badge pill on a sidebar nav link */
+.sidebar-link-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 var(--space-1);
+  background-color: var(--color-danger);
+  color: var(--color-white);
+  border-radius: var(--radius-full);
+  font-size: 10px;
+  font-weight: var(--font-weight-bold);
+  margin-left: auto;
+  line-height: 1;
+}
+
+/* Section label inside nav */
+.sidebar-section-label {
+  display: block;
+  font-size: 10px;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-gray-400);
+  padding: var(--space-2) var(--space-3);
+  margin-bottom: var(--space-1);
+}
+
+/* ----------------------------------------------------------
+   10. Navbar — right side actions
+   ---------------------------------------------------------- */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-left: auto;
+}
+
+.navbar-user {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+  border-radius: var(--radius-lg);
+  padding: var(--space-1);
+  transition: background-color var(--transition-fast);
+}
+
+.navbar-user:hover {
+  background-color: var(--color-gray-100);
+}
+
+/* Hamburger toggle button */
+.sidebar-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: 1.25rem;
+  color: var(--color-gray-600);
+  transition: background-color var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.sidebar-toggle:hover {
+  background-color: var(--color-gray-100);
+}
+
+/* Role-coloured badges used in navbar */
+.badge-emp { background-color: var(--color-primary-light); color: var(--color-primary); border-color: var(--color-primary-border); }
+.badge-rm  { background-color: #faf5ff; color: #7c3aed; border-color: #e9d5ff; }
+.badge-ape { background-color: var(--color-warning-light); color: var(--color-warning); border-color: var(--color-warning-border); }
+.badge-cfo { background-color: var(--color-success-light); color: var(--color-success); border-color: var(--color-success-border); }
