@@ -1,5 +1,5 @@
-import { db } from '../../backend/db/index.js';
-import { employees, reimbursements } from '../../backend/db/schema.js';
+import { db } from '../../db/index.js';
+import { employees, reimbursements } from '../../db/schema.js';
 import { eq, and, inArray } from 'drizzle-orm';
 
 /**
